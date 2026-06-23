@@ -20,11 +20,11 @@ export function WorkExperience() {
   return (
     <section id="work" ref={ref} className="w-full mb-8">
       <h1 className="text-3xl font-extrabold">Work History</h1>
-      <div className="flex flex-wrap items-center gap-8 py-4">
+      <div className="flex flex-wrap items-center gap-4 sm:gap-8 py-4">
         {jobs.map((job) => (
           <div
             key={job.company}
-            className="h-20 w-20  flex items-center gap-16 justify-center"
+            className="h-14 w-14 sm:h-20 sm:w-20 flex items-center justify-center"
             title={job.company}
           >
             {logos[job.company] ? (
