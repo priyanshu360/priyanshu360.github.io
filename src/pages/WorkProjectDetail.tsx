@@ -55,7 +55,7 @@ export function WorkProjectDetail() {
 
   if (!slug || !content) {
     return (
-      <main className="w-full max-w-[800px] flex flex-col">
+      <main className="w-full max-w-[800px] flex flex-col px-4">
         <section className="my-8">
           <h1>Project not found</h1>
           <p><Link to="/#work">&larr; Back to work history</Link></p>
@@ -65,7 +65,7 @@ export function WorkProjectDetail() {
   }
 
   return (
-    <main className="w-full max-w-[800px] flex flex-col">
+    <main className="w-full max-w-[800px] flex flex-col px-4">
       <article className="w-full">
         <header className="mb-8">
           <p className="mb-2 text-sm"><Link to="/#work">&larr; Work History</Link></p>
@@ -103,6 +103,9 @@ export function WorkProjectDetail() {
               },
               pre({ children }) {
                 return <pre className="bg-surface-3 border border-surface-4 rounded-lg p-4 overflow-x-auto text-sm leading-relaxed">{children}</pre>
+              },
+              table({ children }) {
+                return <div className="overflow-x-auto"><table>{children}</table></div>
               },
               a({ href, children }) {
                 return <a href={href} target="_blank" rel="noopener noreferrer" className="text-accent underline">{children}</a>

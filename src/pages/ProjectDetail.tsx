@@ -50,7 +50,7 @@ export function ProjectDetail() {
 
   if (!project) {
     return (
-      <main className="w-full max-w-[800px] flex flex-col">
+      <main className="w-full max-w-[800px] flex flex-col px-4">
         <section className="my-8">
           <h1>Project not found</h1>
           <p><Link to="/">&larr; Back home</Link></p>
@@ -62,7 +62,7 @@ export function ProjectDetail() {
   const color = languageColors[project.language] || '#888'
 
   return (
-    <main className="w-full max-w-[800px] flex flex-col">
+      <main className="w-full max-w-[800px] flex flex-col px-4">
       <article className="w-full">
         <header className="mb-8">
           <p className="mb-2 text-sm"><Link to="/">&larr; Home</Link></p>
@@ -109,6 +109,9 @@ export function ProjectDetail() {
               },
               pre({ children }) {
                 return <pre className="overflow-x-auto text-sm">{children}</pre>
+              },
+              table({ children }) {
+                return <div className="overflow-x-auto"><table>{children}</table></div>
               },
               a({ href, children }) {
                 return <a href={href} target="_blank" rel="noopener noreferrer" className="text-accent underline">{children}</a>
