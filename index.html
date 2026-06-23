@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Priyanshu Rajput</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      const pre = document.createElement('pre')
+      pre.id = 'bg-ascii'
+
+      const dot = '.  '
+      const seq = ['{  [  (  <  ', '}  ]  )  >  ', '[  (  <  {  ', ']  )  >  }  ', '(  <  {  [  ', ')  >  }  ]  ']
+      const lines = []
+
+      for (let r = 0; r < 30; r++) {
+        lines.push('  ' + dot.repeat(120))
+        if (r < 30) lines.push('  ' + seq[r % 6].repeat(60))
+      }
+
+      pre.textContent = lines.join('\n')
+      document.body.prepend(pre)
+    </script>
+  </body>
+</html>
