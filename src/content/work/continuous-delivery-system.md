@@ -457,30 +457,4 @@ flowchart TB
 | Traffic routing | Istio VirtualService | nginx-ingress weighted backends | Istio supports per-header routing (canary by user-agent) and sub-1% weights. nginx only does backend-level weighting. |
 | Event bus | NATS | Kafka or Redis Pub/Sub | NATS is lightweight (< 20 MB), at-least-once delivery, Go-native. Kafka is overkill for internal pipeline events. Redis Pub/Sub loses messages without subscribers. |
 
-### Feature checklist
-
-| Feature | Status | Notes |
-|---------|--------|-------|
-| Declarative YAML pipeline config | ✅ | Cluster ordering, required flags, canary weights |
-| Multi-dimensional matrix monitoring | ✅ | Prometheus across cluster × region × version × time |
-| Canary deployment with traffic splitting | ✅ | Istio VirtualService with configurable weight |
-| Sequential rollback with monitoring phase | ✅ | Reverse-stage iteration with per-cluster validation |
-| A/B testing with configurable split | ✅ | 50/50 default, inherits pipeline monitoring metrics |
-| Slack notifications on every transition | ✅ | Stage start/completion, metric pass/fail, rollback events |
-| Git webhook trigger | ✅ | Pipeline triggered on push to configured branch |
-| Prometheus empty-result guard | ✅ | Explicit nil check before passing metrics |
-| Stage checkpoint persistence | ❌ Not implemented | In-memory only — crashes lose position |
-| Progressive delivery (gradual traffic ramp) | ⏳ Planned | 1% → 5% → 10% → 25% → 50% → 100% |
-| Blue-green deployment strategy | ⏳ Planned | Alternative to canary for stateful services |
-| Canary duration based on statistical significance | ⏳ Planned | Fixed 30s interval currently; needs sequential probability ratio test (SPRT) |
-| Deployment dashboard with real-time matrix viz | ⏳ Planned | SSE events from NATS → React dashboard |
-| Artifact retention aligned with rollback window | ⏳ Planned | Needs integration with container registry lifecycle policies |
-
-### Next steps
-
-- Add automated canary duration based on statistical significance
-- Implement progressive delivery with gradual traffic increase
-- Add blue-green deployment strategy as an alternative
-- Build a deployment dashboard with real-time matrix visualization
-
 The full source is at [github.com/priyanshu360/continuous-delivery-system](https://github.com/priyanshu360/continuous-delivery-system).

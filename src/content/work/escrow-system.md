@@ -280,44 +280,4 @@ flowchart LR
 | **Amount type** | `int64` (smallest unit) | `decimal(20,2)` or `float64` | `int64` is fastest and avoids float rounding. `decimal` is safer for multi-currency (stores scale factor) but slower for aggregation. |
 | **Idempotency** | Client-generated UUID keys | Server-generated keys | Client keys work offline — the client can retry without waiting for server response. Server keys require a round trip to get the key, then another to use it. |
 
-### Feature checklist
-
-| Feature | Status | Notes |
-|---------|--------|-------|
-| Deposit (idempotent) | ✅ Done | Uses `ReferenceID + FirstOrCreate` — switch to `ON CONFLICT DO NOTHING` for production |
-| Withdrawal (idempotent) | ✅ Done | Same pattern as deposit |
-| Hold / bet placement | ✅ Done | Missing idempotency keys — add before production |
-| Settle (win/loss) | ✅ Done | Missing idempotency keys — add before production |
-| Transfer (P2P) | ✅ Done | Atomic sender-debit + receiver-credit in one transaction |
-| Admin adjustment | ✅ Done | Must bypass balance checks — audit every adjustment |
-| Kafka event emission | ✅ Done | Direct publish — upgrade to transactional outbox |
-| `SELECT FOR UPDATE` locking | ✅ Done | Correctly serializes concurrent holds |
-| Running balance tracking | ✅ Done | Computed inside transaction — correct |
-| Per-game wallets | ✅ Done | Composite key on `(player_id, game_id)` |
-| Batch settlement | ❌ TODO | Needed for tournaments — atomically settle all holds in one transaction |
-| Reconciliation job | ❌ TODO | Compare Kafka events vs ledger entries daily |
-| Reserved balance for pending withdrawals | ❌ TODO | Prevent withdrawal of funds that are queued for cash-out |
-| Optimistic locking with `Version` | ❌ TODO | `Wallet.Version` exists but unused — wire it up for lower-contention paths |
-| Admin adjustment dashboard | ❌ TODO | Web UI for support team to correct balances |
-| Transactional outbox | ❌ TODO | Replace direct Kafka publish with outbox table + relay |
-| Dedup by reference_id | ⚠️ Partial | Added to ledger entries, missing from hold/settle functions |
-
-### When to use what
-
-- **Use `SELECT FOR UPDATE`** when a wallet operation reads the balance, makes a decision (e.g., "is there enough?"), and then writes. Without the lock, a concurrent request can change the balance between your read and write.
-- **Use optimistic locking** when the same wallet is rarely contended (most players don't multi-bet simultaneously). Retry loops with exponential backoff keep the system responsive under low contention.
-- **Use the ledger pattern** whenever you need an audit trail — which is always for financial systems. Even if you store a cached balance for fast reads, the ledger is the source of truth.
-- **Use the outbox pattern** when event loss is unacceptable. If missing a hold event means the fraud system doesn't flag a suspicious pattern, you need outbox.
-
-### Next steps
-
-- Add batch settlement for tournaments (atomically settle all holds)
-- Implement daily reconciliation job comparing Kafka events vs ledger entries
-- Add reserved balance for pending withdrawals
-- Build an admin adjustment dashboard
-- Replace `FirstOrCreate` with raw `INSERT ... ON CONFLICT DO NOTHING` for true idempotency
-- Add idempotency keys to hold and settle operations
-- Implement transactional outbox for reliable Kafka delivery
-- Wire up the `Version` field for optimistic locking on low-contention paths
-
 The full source is at [github.com/priyanshu360/escrow-system](https://github.com/priyanshu360/escrow-system).

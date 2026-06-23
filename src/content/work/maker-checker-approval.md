@@ -335,29 +335,4 @@ workflow:
 
 **Compacted topics** for queues give real-time updates without polling.
 
-### Feature checklist
-
-| Feature | Status | Notes |
-|---|---|---|
-| Formal state machine | ✅ | Table-driven with guard functions |
-| Kafka audit trail with exactly-once | ✅ | Requires idempotent producer + transactional config |
-| Compacted topic assignment queues | ✅ | Per-assignee topics, auto-create on claim |
-| Optimistic concurrency control | ✅ | Version field, retry loop needed |
-| RBAC via guard functions | ✅ | JWT claims, field-level permission checks |
-| Data-driven workflow config (YAML) | ✅ | Hot-reload support recommended |
-| Deadline enforcement | Partial | `Deadline` field on Task model, no escalation hook |
-| Transactional outbox (DB + Kafka consistency) | ❌ | Recommended for production to prevent audit gaps |
-| SLA breach notifications | ❌ | See Next Steps |
-| Compliance dashboard | ❌ | See Next Steps |
-| Batch approval | ❌ | See Next Steps |
-| Automated escalation | ❌ | See Next Steps |
-| Graceful Kafka publish failure handling | ❌ | Retry loop + reconciliation worker needed |
-
-### Next steps
-
-- Add automated escalation for tasks approaching deadline
-- Implement SLA breach notifications
-- Build a compliance dashboard showing all state transitions per entity
-- Add batch approval for admin users
-
 The full source is at [github.com/priyanshu360/maker-checker-approval](https://github.com/priyanshu360/maker-checker-approval).

@@ -253,29 +253,4 @@ flowchart TB
 | **Per-entity hash chains over global chain** | Single global chain across all entities | Per-entity chains allow parallel verification (each entity can be checked independently). A global chain would serialize all writes — every event would need the previous event's hash, creating a throughput bottleneck. Per-entity is more scalable and isolates failures. |
 | **SHA-256 over SHA-3** | SHA-3-256 or BLAKE2b | SHA-256 is hardware-accelerated on modern CPUs (Intel SHA-NI), making it 4-5x faster than SHA-3. BLAKE2b is even faster but less widely audited. SHA-256 is the conservative choice — NIST-approved and universally available in standard libraries. |
 
-### Feature checklist
-
-| Feature | Status | Notes |
-|---------|--------|-------|
-| Append-only event log | ✅ Complete | Infinite retention on retention topic |
-| Hash chain integrity | ✅ Complete | SHA-256 per-entity chain linking |
-| Compaction for current state | ✅ Complete | Compacted topic with `EntityType:EntityID` key |
-| Idempotent producer | ✅ Complete | Kafka idempotent producer enabled in SDK |
-| Periodic integrity verification | ✅ Complete | Background job walks full chain per entity |
-| GraphQL query API | ✅ Complete | Supports both point lookup and time-range queries |
-| Schema registry | ❌ Not implemented | Events are JSON without versioning — payload changes break existing consumers |
-| Alerting on broken chain | ❌ Not implemented | Verifier returns error but doesn't notify (PagerDuty, Slack, etc.) |
-| S3 cold storage archival | ❌ Not implemented | Archival worker shown in diagram but not implemented |
-| REST verification API | ❌ Not implemented | No remote endpoint for auditors to trigger verification |
-| Per-entity locking | ❌ Not implemented | Read-then-write race in SDK can fork the chain |
-| Streaming verification | ❌ Not implemented | Verifier loads all events into memory — risk for entities with millions of events |
-| Prometheus metrics | ❌ Not implemented | No observability on publish rates, verification latency, or chain breaks |
-
-### Next steps
-
-- Add a schema registry (protobuf/Avro) for backward-compatible payload evolution
-- Implement a REST API for auditors to verify integrity remotely
-- Add alerting when the verifier detects a broken chain
-- Archive events older than retention period to S3 with Glacier
-
 The full source is at [github.com/priyanshu360/audit-trail-system](https://github.com/priyanshu360/audit-trail-system).

@@ -316,30 +316,4 @@ func (r *ObservabilityReconciler) updateStatus(ctx context.Context, cr *observab
 | **Component switch statement** | Registry pattern (map of reconcilers) | Explicit and easy to read for 3–5 components. The trade-off is a longer Reconcile function. |
 | **5-minute requeue** | Watch-only (no requeue) | Catches drift from manual edits and cluster disruptions that informer events wouldn't trigger. |
 
-### Feature comparison / checklist
-
-| Feature | Status | Notes |
-|---------|--------|-------|
-| CRD definition | ✅ Done | `ClusterObservability` with component list + global config |
-| Reconciler loop | ✅ Done | Watches CR changes, reconciles all components |
-| Fluentd lifecycle | ✅ Done | ConfigMap + DaemonSet create/update |
-| Node Exporter lifecycle | ✅ Done | On/off toggle via `enabled` field |
-| Datadog Agent lifecycle | ✅ Done | Secret-based API key via `apiKeySecret` |
-| Idempotent apply | ✅ Done | `applyResource` with create-or-update semantics |
-| Component status reporting | ✅ Done | Three-tier health with pod counts |
-| Rolling upgrade management | ✅ Done | Two-phase ConfigMap + DaemonSet update |
-| Upgrade health monitoring | ✅ Done | Post-rollout health check loop |
-| Orphan component cleanup | ❌ Missing | Components removed from CR are not deleted |
-| ConfigMap change detection | ❌ Missing | DaemonSet not updated when ConfigMap content changes |
-| Upgrade timeout detection | ❌ Missing | Stuck rollouts not surfaced in status |
-| Retry on status update conflict | ❌ Missing | No retry for 409 Conflict on status write |
-| Per-user rate limiting | N/A | Applies to webhook layer, not operator core |
-
-### Next steps
-
-- Add support for custom component types via a plug-in system
-- Implement drift detection between CR and actual cluster state
-- Add a webhook for CR validation
-- Build a dashboard showing operator health across all clusters
-
 The full source is at [github.com/priyanshu360/kubernetes-operator](https://github.com/priyanshu360/kubernetes-operator).

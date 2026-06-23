@@ -419,30 +419,4 @@ flowchart TB
 | Cache invalidation | Hot-reload (atomic swap) | Restart service | Zero downtime; atomic pointer swap is safe in Go (no ABA problem) |
 | UI editor | Monaco (VS Code) | CodeMirror / plain textarea | Syntax highlighting from JSON grammar; squiggly underlines for errors; familiar UX |
 
-### Feature checklist
-
-| Feature | Status | Notes |
-|---------|--------|-------|
-| DSL lexer | Done | 7 token types, byte-level position tracking |
-| Recursive-descent parser | Done | LL(1), one-token lookahead |
-| AST evaluator | Done | Context-aware, type-safe operator dispatch |
-| DAG dependency resolution | Done | Compile-time cycle detection |
-| Rule versioning | Done | Timestamp + author per version |
-| Hot-reload cache | Done | Atomic swap, no service restart |
-| Real-time validation | Done | Debounced syntax check on keystroke |
-| Syntax highlighting | Done | TextMate grammar in Monaco |
-| Field schema validation | Planned | Validate rule fields against known entity schemas at compile time |
-| Dry-run mode | Planned | Evaluate rules against sample data before deploying |
-| Rule schedules | Planned | Time-based activation (e.g., "active from 9 AM - 5 PM") |
-| Visual dependency graph | Planned | Interactive DAG visualization in the editor |
-| A/B testing variants | Planned | Run two rule versions and compare outcomes |
-| Per-user rate limiting | Not applicable | Applied at the API layer, not in the engine |
-
-### Next steps
-
-- Add a dry-run mode that evaluates rules against sample data before deploying
-- Support rule schedules (time-based activation)
-- Build a visual rule dependency graph
-- Implement A/B testing for rule variants
-
 The full source is at [github.com/priyanshu360/business-rule-engine](https://github.com/priyanshu360/business-rule-engine).
