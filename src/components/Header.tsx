@@ -25,9 +25,7 @@ const ascii = [
 export function Header() {
   return (
     <section className="my-8">
-      <div className=" overflow-x-auto">
-        <pre className="font-mono sm:text-[0.85rem] text-[0.35rem] leading-[1.05] text-content whitespace-pre m-0">{ascii}</pre>
-      </div>
+      <pre className="font-mono sm:text-[0.85rem] text-[0.35rem] leading-[1.05] text-content whitespace-pre m-0">{ascii}</pre>
       <p className="text-content-muted"><i>Software engineer building infrastructure, platforms, and developer tooling</i></p>
     </section>
   )
